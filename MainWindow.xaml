@@ -1,0 +1,192 @@
+﻿<Window x:Class="HolyCryptv3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HolyCryptv3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800" ResizeMode="NoResize">
+    <Grid>
+        <TabControl x:Name="TabMenu">
+            <TabItem Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="CipherButton" Grid.Column="1" Grid.Row="1" Height="50" VerticalAlignment="Top" FontSize="14pt" Click="GeneralButton_Click" Margin="0 30 0 0">Осаждение информации</Button>
+                    <Button x:Name="DecipherButton" Grid.Column="1" Grid.Row="1" Height="50" VerticalAlignment="Bottom" FontSize="14pt" Click="GeneralButton_Click" Margin="0 0 0 30">Извлечение информации</Button>
+                </Grid>
+            </TabItem>
+            <TabItem Visibility="Collapsed">
+                <Grid>
+                    <TabControl x:Name="CipherTabs">
+                        <TabItem Visibility="Collapsed">
+                            <Grid Height="auto">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="9*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                       FontSize="14pt"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center">Стегосообщение</Label>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="5*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                        <RowDefinition Height="0.5*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Height="25" Width="150" x:Name="OpenFileButton" Click="OpenFileButton2_Click">Открыть файл</Button>
+                                    <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <TextBox x:Name="ClearTextBox" Width="auto" TextWrapping="Wrap" LostKeyboardFocus="ClearTextBox_LostKeyboardFocus"></TextBox>
+                                    </ScrollViewer>
+                                    <Label Grid.Column="1" FontSize="14pt" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">Бинарное представление</Label>
+                                    <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <TextBox x:Name="BinaryClearTextBox" Width="auto" TextWrapping="Wrap" IsReadOnly="True"></TextBox>
+                                    </ScrollViewer>
+                                    <Label Grid.Column="1" Grid.Row="2" Width="150" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">Количество битов:</Label>
+                                    <Label Grid.Column="1" Grid.Row="2" Width="50" x:Name="BitsCounterLabel" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+                                    <Button x:Name="ClearTextNextButton" Click="ClearTextNextButton_Click" IsEnabled="False" Grid.Column="1" Grid.Row="2" Width="150" Height="25" HorizontalAlignment="Right" Margin="0 0 20 0">Далее</Button>
+                                    <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                                        <Label x:Name="ErrorHeader" Width="75px" Height="30px" HorizontalAlignment="Left" Foreground="Red" Visibility="Hidden">Ошибка:</Label>
+                                        <Label x:Name="ErrorLabel" Width="250px" Height="30px" Foreground="Red" Visibility="Hidden"></Label>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Visibility="Collapsed">
+                            <Grid Height="auto">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="9*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                       FontSize="14pt"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center">Стегоконтейнер</Label>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="5*"/>
+                                        <RowDefinition Height="1*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Height="25" Width="150" x:Name="OpenFile2Button" Click="OpenFile2Button2_Click">Открыть файл</Button>
+                                    <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <TextBox x:Name="ContainerTextBox" Width="auto" TextWrapping="Wrap"></TextBox>
+                                    </ScrollViewer>
+                                    <Grid Grid.Column="1" Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button x:Name="WordCountButton" Click="WordCountButton2_Click" Grid.Column="0" Grid.Row="0" Height="25" IsEnabled="False" Margin="10 0 10 0">Подсчитать</Button>
+                                        <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">Количество символов:</Label>
+                                        <Label x:Name="WordCounterLabel" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                                        <Button x:Name="ContainerCheckButton" IsEnabled="False" Click="ContainerCheckButton2_Click" Grid.Column="0" Grid.Row="1" Height="25" Margin="10 0 10 0">Проверить</Button>
+                                        <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Результат:</Label>
+                                        <Label x:Name="ContainerCheckLabel" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                                        <Button x:Name="ContainerTest" IsEnabled="False" Click="ContainerTest2_Click" Grid.Column="0" Grid.Row="2" Height="25" Margin="10 0 10 0">Тест</Button>
+                                        <Label Grid.Row="2" Grid.Column="1" x:Name="TestLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red">Статус</Label>
+                                        <Label x:Name="Error2Header" Foreground="Red" Visibility="Hidden" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center">Ошибка:</Label>
+                                        <Label x:Name="Error2Label" Foreground="Red" Visibility="Hidden" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Bottom"></Label>
+                                    </Grid>
+                                    <Button x:Name="ContainerPrevButton" Click="ContainerPrevButton_Click" IsEnabled="True" Grid.Column="0" Grid.Row="2" Width="150" Height="25">Назад</Button>
+                                    <Button x:Name="MenuButton1" Grid.Column="1" Grid.Row="2" Height="25" Width="150px" Click="MenuButton_Click">В меню</Button>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Visibility="Collapsed">
+                <Grid Height="auto">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="9*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="1"
+                                       FontSize="14pt"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center">Стегоконтейнер</Label>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Height="25" Width="150" x:Name="OpenFile3Button" Click="OpenFile3Button_Click">Открыть файл</Button>
+                        <Label Height="25" Width="150" Grid.Column="1" HorizontalContentAlignment="Center" Foreground="Red" x:Name="EncodedFileStatus">Файл не выбран</Label>
+                        <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <TextBox x:Name="DecodedText" Width="auto" TextWrapping="Wrap"></TextBox>
+                        </ScrollViewer>
+                        <Grid Grid.Column="1" Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="DecodeButton" Click="DecodeButton2_Click" Grid.Column="0" Grid.Row="0" Margin="10 0 10 0" Height="25" IsEnabled="False">Извлечь сообщение</Button>
+                            <Label x:Name="DecodeStatusKey" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Статус:</Label>
+                            <Label x:Name="DecodeStatusValue" Grid.Column="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></Label>
+                        </Grid>
+                        <Button x:Name="MenuButton2" Grid.Column="2" Grid.Row="4" Height="25" Width="150px" Click="MenuButton_Click">В меню</Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
