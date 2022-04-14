@@ -33,6 +33,18 @@ namespace HolyCryptv3 {
         private int lettersCount                = 0;
         private int bitsCount                   = 0;
 
+        private Dictionary<string, (int, int)> bits_params = new Dictionary<string, (int, int)> {
+            {"0000", (96000,635)},  {"1000", (98000,915)},
+            {"0001", (96250,670)},  {"1001", (98250,950)},
+            {"0010", (96500,705)},  {"1010", (98500,985)},
+            {"0011", (96750,740)},  {"1011", (98750,1020)},
+            {"0100", (97000,775)},  {"1100", (99000,1055)},
+            {"0101", (97250,810)},  {"1101", (99250,1090)},
+            {"0110", (97500,845)},  {"1110", (99500,1125)},
+            {"0111", (97750,880)},  {"1111", (99750,1160)},
+            {  "XX", (100000,635)}
+        };
+
         private Dictionary<string, (int, int)> outlines = new Dictionary<string, (int, int)> {
             {"00", (96000,635)},
             {"01", (100000,635)},
@@ -219,19 +231,6 @@ namespace HolyCryptv3 {
                         return;
                 }
 
-                //try {
-                //    using (WordprocessingDocument document = WordprocessingDocument.Open(this.message_file_path, false)) {
-                //        Body? body = document.MainDocumentPart?.Document.Body;
-                //        this.ClearTextBox.Text = body?.InnerText;
-                //    }
-                //}
-                //catch (Exception ex) {
-                //    this.ErrorHeader.Visibility = Visibility.Visible;
-                //    this.ErrorLabel.Visibility = Visibility.Visible;
-                //    this.ErrorLabel.Content = ex.Message;
-                //    return;
-                //}
-
                 this.BinaryClearTextBox.Clear();
                 this.BinaryClearTextBox.Text = ToBinaryString(Encoding.GetEncoding(1251), this.ClearTextBox.Text ?? "");
 
@@ -240,7 +239,6 @@ namespace HolyCryptv3 {
                 ContainerCheckButton.IsEnabled = false;
                 ContainerCheckLabel.Visibility = Visibility.Hidden;
                 ClearTextNextButton.IsEnabled = true;
-                //ContainerNextButton.IsEnabled = false;
             }
         }
 
