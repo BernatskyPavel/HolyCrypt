@@ -17,6 +17,9 @@ using System.Windows.Media;
 
 namespace HolyCryptv3 {
     partial class MainWindow: Window {
+
+        private string ConcealedFilePath = string.Empty;
+
         private void OpenConcealedFileBtn_Click(object sender, RoutedEventArgs e) {
             ConcealedFileStatus.Foreground = Brushes.Red;
             ConcealedFileStatus.Content = "Файл не выбран";

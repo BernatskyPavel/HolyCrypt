@@ -17,8 +17,12 @@ using System.Windows.Media;
 
 namespace HolyCryptv3 {
     partial class MainWindow: Window {
-
-        private string IgnoredSymbolsList = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s]";
+        private string MsgFilePath              = string.Empty;
+        private string ContainerFilePath        = string.Empty;
+        private string IgnoredSymbolsList       = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s]";
+        //private int ContainerLength = 0;
+        private int ContainerSymbolsCounter     = 0;
+        private int MsgBitsCounter              = 0;
 
         #region Message
         private void OpenMsgBtn_Click(object sender, RoutedEventArgs e) {
@@ -99,7 +103,7 @@ namespace HolyCryptv3 {
 
                 this.MsgBitsCounter = MsgBitsTextBox.Text.Length;
                 BitsCounterLabel.Content = this.MsgBitsCounter;
-                ContainerTestBtn.IsEnabled = false;
+                ContainerCheckBtn.IsEnabled = false;
                 ContainerCheckLabel.Visibility = Visibility.Hidden;
                 ClearTextNextButton.IsEnabled = true;
             }
@@ -107,6 +111,7 @@ namespace HolyCryptv3 {
         private void MsgTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) {
             this.MsgBitsTextBox.Text = ToBinaryString(Encoding.GetEncoding(1251), this.MsgTextBox.Text);
             this.BitsCounterLabel.Content = this.MsgBitsTextBox.Text.Length;
+            ClearTextNextButton.IsEnabled = this.MsgTextBox.Text.Length != 0;
         }
         #endregion
 
@@ -114,11 +119,9 @@ namespace HolyCryptv3 {
         private void OpenContainerBtn_Click(object sender, RoutedEventArgs e) {
             this.ContainerErrorHeader.Visibility = Visibility.Hidden;
             this.ContainerErrorLabel.Visibility = Visibility.Hidden;
-            this.WordCountButton.IsEnabled = false;
-            this.ContainerSymbolsCounterLabel.Content = string.Empty;
             this.ContainerCheckLabel.Content = string.Empty;
-            this.ContainerTestBtn.IsEnabled = false;
-            this.ContainerTest.IsEnabled = false;
+            this.ContainerCheckBtn.IsEnabled = false;
+            this.ConcealBtn.IsEnabled = false;
             var FileDialog = new Microsoft.Win32.OpenFileDialog {
                 FileName = "Document",
                 DefaultExt = ".docx",
@@ -144,43 +147,51 @@ namespace HolyCryptv3 {
                     return;
                 }
 
-                WordCountButton.IsEnabled = true;
-                ContainerTestBtn.IsEnabled = false;
+                ContainerCheckBtn.IsEnabled = true;
                 ContainerCheckLabel.Visibility = Visibility.Hidden;
                 //ContainerNextButton.IsEnabled = false;
             }
         }
 
-        private void CountSymbolsBtn_Click(object sender, RoutedEventArgs e) {
-            //string IgnoredSymbolsList = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s]";
+        //private void CountSymbolsBtn_Click(object sender, RoutedEventArgs e) {
+        //    //string IgnoredSymbolsList = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s]";
+        //    Regex RegExp = new Regex(this.IgnoredSymbolsList);
+        //    //string text = ContainerTextBox.Text;
+        //    this.ContainerTextBox.Text = RegExp.Replace(this.ContainerTextBox.Text, string.Empty);
+        //    //int FilteredTextLen = this.ContainerTextBox.Text.Length;
+        //    this.ContainerSymbolsCounter = this.ContainerTextBox.Text.Length;
+        //    this.ContainerSymbolsCounterLabel.Content = this.ContainerSymbolsCounter;
+        //    this.ContainerCheckBtn.IsEnabled = true;
+        //}
+
+        private void ContainerCheckBtn_Click(object sender, RoutedEventArgs e) {
+
             Regex RegExp = new Regex(this.IgnoredSymbolsList);
             //string text = ContainerTextBox.Text;
-            this.ContainerTextBox.Text = RegExp.Replace(this.ContainerTextBox.Text, string.Empty);
+            //string TempBuff = RegExp.Replace(this.ContainerTextBox.Text, string.Empty);
             //int FilteredTextLen = this.ContainerTextBox.Text.Length;
-            this.ContainerSymbolsCounter = this.ContainerTextBox.Text.Length;
-            this.ContainerSymbolsCounterLabel.Content = this.ContainerSymbolsCounter;
-            this.ContainerTestBtn.IsEnabled = true;
-        }
-
-        private void ContainerTestBtn_Click(object sender, RoutedEventArgs e) {
-            ContainerCheckLabel.Content = "Не подходит!";
-            ContainerCheckLabel.Foreground = Brushes.Red;
-            ContainerTest.IsEnabled = false;
-            ContainerCheckLabel.Visibility = Visibility.Visible;
-            if (this.ContainerSymbolsCounter >= this.MsgBitsCounter / 2) {
-                ContainerCheckLabel.Content = "Подходит!";
-                ContainerCheckLabel.Foreground = Brushes.Green;
-                ContainerTest.IsEnabled = true;
+            this.ContainerSymbolsCounter = RegExp.Replace(this.ContainerTextBox.Text, string.Empty).Length;
+            {
+                bool CheckResult = this.ContainerSymbolsCounter >= this.MsgBitsCounter / (int)this.BitsPerSymbolSlider.Value;
+                
+                this.ContainerCheckLabel.Content = CheckResult ? "Подходит" : "Не подходит!";
+                this.ContainerCheckLabel.Foreground = CheckResult ? Brushes.Green : Brushes.Red;
+                this.ConcealBtn.IsEnabled = CheckResult;
+                this.ContainerCheckLabel.Visibility = Visibility.Visible;
             }
+            //if (this.ContainerSymbolsCounter >= this.MsgBitsCounter / 2) {
+            //    this.ContainerCheckLabel.Content = "Подходит!";
+            //    this.ContainerCheckLabel.Foreground = Brushes.Green;
+            //    this.ConcealBtn.IsEnabled = true;
+            //}
         }
 
         private void ConcealBtn_Click(object sender, RoutedEventArgs e) {
             ConcealStatusLabel.Foreground = Brushes.Red;
             string MsgBits = this.MsgBitsTextBox.Text;
             bool IsConcealingActive = true;
-            //string IgnoredSymbolsList = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~– ]";
 
-            Queue<(int, string)> MsgBitsQueue = this.parseBitString(MsgBits, 2);
+            Queue<(int, string)> MsgBitsQueue = this.parseBitString(MsgBits, (int)this.BitsPerSymbolSlider.Value);
 
             using (WordprocessingDocument Document =
                          WordprocessingDocument.Open(this.ContainerFilePath, true)) {

@@ -21,7 +21,7 @@ namespace HolyCryptv3
 
             (int, int) values = this.outlines[key];
 
-            TextOutlineEffect? effect = (TextOutlineEffect?)this.outline_basis?.CloneNode(true);
+            TextOutlineEffect? effect = (TextOutlineEffect?)this.OutlineBase?.CloneNode(true);
 
             if (effect == null) {
                 return effect;

@@ -8,12 +8,6 @@ namespace HolyCryptv3 {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow: Window {
-        private string MsgFilePath              = string.Empty;
-        private string ContainerFilePath        = string.Empty;
-        private string ConcealedFilePath        = string.Empty;
-        private int ContainerSymbolsCounter     = 0;
-        private int MsgBitsCounter              = 0;
-
         private Dictionary<string, (int, int)> bits_params = new Dictionary<string, (int, int)> {
             {"0000", (96000,635)},  {"1000", (98000,915)},
             {"0001", (96250,670)},  {"1001", (98250,950)},
@@ -34,20 +28,20 @@ namespace HolyCryptv3 {
             {"XX", (99000,635)},
         };
 
-        private TextOutlineEffect? outline_basis = null;
-        private TextOutlineEffect? finish_outline = null;
+        private TextOutlineEffect? OutlineBase = null;
+        private TextOutlineEffect? CompleteOutline = null;
 
         
 
         public MainWindow() {
 
-            this.outline_basis = new TextOutlineEffect {
+            this.OutlineBase = new TextOutlineEffect {
                 CapType = LineCapValues.Round,
                 Alignment = PenAlignmentValues.Center,
                 Compound = CompoundLineValues.Simple,
             };
 
-            this.finish_outline = this.getOutline("XX");
+            this.CompleteOutline = this.getOutline("XX");
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             InitializeComponent();
