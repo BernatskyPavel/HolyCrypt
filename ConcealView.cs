@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -20,7 +19,6 @@ namespace HolyCryptv3 {
         private string MsgFilePath              = string.Empty;
         private string ContainerFilePath        = string.Empty;
         private string IgnoredSymbolsList       = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s]";
-        //private int ContainerLength = 0;
         private int ContainerSymbolsCounter     = 0;
         private int MsgBitsCounter              = 0;
 
@@ -99,7 +97,7 @@ namespace HolyCryptv3 {
                 }
 
                 this.MsgBitsTextBox.Clear();
-                this.MsgBitsTextBox.Text = ToBinaryString(Encoding.GetEncoding(1251), this.MsgTextBox.Text ?? "");
+                this.MsgBitsTextBox.Text = ToBinaryString(this.Encoding, this.MsgTextBox.Text ?? "");
 
                 this.MsgBitsCounter = MsgBitsTextBox.Text.Length;
                 BitsCounterLabel.Content = this.MsgBitsCounter;
@@ -109,7 +107,7 @@ namespace HolyCryptv3 {
             }
         }
         private void MsgTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) {
-            this.MsgBitsTextBox.Text = ToBinaryString(Encoding.GetEncoding(1251), this.MsgTextBox.Text);
+            this.MsgBitsTextBox.Text = ToBinaryString(this.Encoding, this.MsgTextBox.Text);
             this.BitsCounterLabel.Content = this.MsgBitsTextBox.Text.Length;
             ClearTextNextButton.IsEnabled = this.MsgTextBox.Text.Length != 0;
         }
@@ -173,7 +171,7 @@ namespace HolyCryptv3 {
             this.ContainerSymbolsCounter = RegExp.Replace(this.ContainerTextBox.Text, string.Empty).Length;
             {
                 bool CheckResult = this.ContainerSymbolsCounter >= this.MsgBitsCounter / (int)this.BitsPerSymbolSlider.Value;
-                
+
                 this.ContainerCheckLabel.Content = CheckResult ? "Подходит" : "Не подходит!";
                 this.ContainerCheckLabel.Foreground = CheckResult ? Brushes.Green : Brushes.Red;
                 this.ConcealBtn.IsEnabled = CheckResult;
@@ -186,7 +184,7 @@ namespace HolyCryptv3 {
             //}
         }
 
-        private void ConcealBtn_Click(object sender, RoutedEventArgs e) {
+        private void ConcealBtn_Old_Click(object sender, RoutedEventArgs e) {
             ConcealStatusLabel.Foreground = Brushes.Red;
             string MsgBits = this.MsgBitsTextBox.Text;
             bool IsConcealingActive = true;
@@ -229,7 +227,7 @@ namespace HolyCryptv3 {
 
                         int RunTxtLen = SelectedRun.InnerText.Length,
                             RunClrTxtLen = SelectedRun.InnerText.Where(ch => !this.IgnoredSymbolsList.Contains(ch)).Count();
-                        
+
                         if (RunClrTxtLen == 0) {
                             Paragraph.AppendChild(ParagraphChild);
                             continue;
@@ -305,6 +303,140 @@ namespace HolyCryptv3 {
                             Run RunCopy = (Run)SelectedRun.CloneNode(true);
                             RunCopy.RemoveAllChildren<Text>();
                             RunCopy.AddChild(new Text(RunTxt));
+                            Paragraph.AppendChild(RunCopy);
+                        }
+
+                    }
+                }
+                Document.Save();
+                ConcealStatusLabel.Foreground = Brushes.Green;
+            }
+        }
+
+        private void ConcealBtn_Click(object sender, RoutedEventArgs e) {
+            ConcealStatusLabel.Foreground = Brushes.Red;
+            string MsgBits = this.MsgBitsTextBox.Text;
+            bool IsConcealingActive = true;
+
+            Queue<(int, int)>? MsgBitsQueue = this.ParseMsg(this.MsgTextBox.Text, (int)this.BitsPerSymbolSlider.Value);
+
+            if (null == MsgBitsQueue) {
+                return;
+            }
+
+            using (WordprocessingDocument Document =
+                         WordprocessingDocument.Open(this.ContainerFilePath, true)) {
+
+                Body DocumentBody = Document.MainDocumentPart?.Document.Body??new Body();
+                var ParagraphList = DocumentBody.ChildElements.Where(child => child is Paragraph);
+                if (ParagraphList == null) {
+                    return;
+                }
+                foreach (Paragraph Paragraph in ParagraphList) {
+                    if (Paragraph == null) {
+                        continue;
+                    }
+
+                    var ParagraphChildList = Paragraph.ChildElements.ToList();
+
+                    Paragraph.RemoveAllChildren();
+
+                    foreach (var ParagraphChild in ParagraphChildList) {
+                        if (!(ParagraphChild is Run) || !IsConcealingActive) {
+                            Paragraph.AppendChild(ParagraphChild);
+                            continue;
+                        }
+
+                        if (MsgBitsQueue.Count == 0) {
+                            Paragraph.AppendChild(ParagraphChild);
+                            IsConcealingActive = false;
+                            continue;
+                        }
+
+                        Run? SelectedRun = ParagraphChild as Run;
+                        if (SelectedRun == null) {
+                            continue;
+                        }
+
+                        int RunTxtLen = SelectedRun.InnerText.Length,
+                            RunClrTxtLen = SelectedRun.InnerText.Where(ch => !this.IgnoredSymbolsList.Contains(ch)).Count();
+
+                        if (RunClrTxtLen == 0) {
+                            Paragraph.AppendChild(ParagraphChild);
+                            continue;
+                        }
+
+                        Queue<(int, int)> BitsRunFit = new Queue<(int, int)>();
+                        while (RunClrTxtLen > 0 && MsgBitsQueue.Count != 0) {
+                            (int Repeats, int BitsValue) BitsPortion = MsgBitsQueue.Dequeue();
+                            int PortionSize = BitsPortion.Repeats;
+                            if (RunClrTxtLen < BitsPortion.Repeats) {
+                                MsgBitsQueue = new Queue<(int, int)>(MsgBitsQueue.Prepend((BitsPortion.Repeats - RunClrTxtLen, BitsPortion.BitsValue)));
+                                PortionSize = RunClrTxtLen;
+                            }
+                            RunClrTxtLen -= PortionSize;
+                            BitsRunFit.Enqueue((PortionSize, BitsPortion.BitsValue));
+                        }
+                        bool IsSymbolIgnored = false;
+                        string RunTxt = SelectedRun.InnerText;
+                        while (BitsRunFit.Count > 0) {
+                            Run RunCopy = (Run)SelectedRun.CloneNode(true);
+                            RunCopy.RemoveAllChildren<Text>();
+                            (int Repeats, int BitsValue) Bits = BitsRunFit.Dequeue();
+                            int SymbolsLen = 0;
+
+                            char[]? Chars = null;
+                            if (!IsSymbolIgnored) {
+                                Chars = RunTxt.TakeWhile(ch => {
+                                    SymbolsLen += 1;
+                                    IsSymbolIgnored = this.IgnoredSymbolsList.Contains(ch);
+                                    return SymbolsLen <= Bits.Repeats && !IsSymbolIgnored;
+                                }).ToArray();
+                            }
+                            else {
+                                Chars = RunTxt.TakeWhile(ch => {
+                                    SymbolsLen += 1;
+                                    return this.IgnoredSymbolsList.Contains(ch);
+                                }).ToArray();
+                                RunTxt = RunTxt.Remove(0, SymbolsLen - 1);
+                                RunCopy.AddChild(new Text { Space = SpaceProcessingModeValues.Preserve, Text = new string(Chars) });
+
+                                Paragraph.AppendChild(RunCopy);
+                                BitsRunFit = new Queue<(int, int)>(BitsRunFit.Prepend(Bits));
+                                IsSymbolIgnored = false;
+                                continue;
+                            }
+
+                            if (IsSymbolIgnored && SymbolsLen == 1) {
+                                BitsRunFit = new Queue<(int, int)>(BitsRunFit.Prepend(Bits));
+                                continue;
+                            }
+                            SymbolsLen += Chars.Length == RunTxt.Length ? 1 : 0;
+                            RunTxt = RunTxt.Remove(0, SymbolsLen - 1);
+                            RunCopy.AddChild(new Text { Space = SpaceProcessingModeValues.Preserve, Text = new string(Chars) });
+                            TextOutlineEffect? OutlineEffects = GetOutlineObj(Bits.BitsValue, (int)this.BitsPerSymbolSlider.Value);
+
+                            RunCopy.RunProperties = RunCopy.RunProperties ?? new RunProperties();
+                            if (OutlineEffects != null)
+                                RunCopy.RunProperties.TextOutlineEffect = OutlineEffects;
+                            Paragraph.AppendChild(RunCopy);
+
+                            if (Chars.Length != Bits.Repeats) {
+                                BitsRunFit = new Queue<(int, int)>(BitsRunFit.Prepend((Bits.Repeats - Chars.Length, Bits.BitsValue)));
+                            }
+                        }
+
+                        if (BitsRunFit.Count == 0 && RunTxt.Length != 0 && RunClrTxtLen == 0) {
+                            Run RunCopy = (Run)SelectedRun.CloneNode(true);
+                            RunCopy.RemoveAllChildren<Text>();
+                            RunCopy.AddChild(new Text { Space = SpaceProcessingModeValues.Preserve, Text = new string(RunTxt) });
+                            Paragraph.AppendChild(RunCopy);
+                        }
+                        else if (MsgBitsQueue.Count == 0 && RunClrTxtLen > 0) {
+                            IsConcealingActive = false;
+                            Run RunCopy = (Run)SelectedRun.CloneNode(true);
+                            RunCopy.RemoveAllChildren<Text>();
+                            RunCopy.AddChild(new Text { Space = SpaceProcessingModeValues.Preserve, Text = new string(RunTxt) });
                             Paragraph.AppendChild(RunCopy);
                         }
 

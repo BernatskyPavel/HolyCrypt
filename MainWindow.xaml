@@ -127,8 +127,8 @@
                                         <Label x:Name="ContainerErrorLabel" Foreground="Red" Visibility="Hidden" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Bottom"></Label>
                                         <Label x:Name="BitsPerSymbolSliderLabel" Content="Битов на символ" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
                                         <DockPanel VerticalAlignment="Center" Margin="10" Grid.Row="0" Grid.Column="1">
-                                            <Label Content="{Binding ElementName=BitsPerSymbolSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40" />
-                                            <Slider Ticks="2,4,8" Maximum="8" TickPlacement="BottomRight" TickFrequency="2" Minimum="2" IsSnapToTickEnabled="True" Name="BitsPerSymbolSlider" />
+                                            <Label Content="{Binding ElementName=BitsPerSymbolSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40"  />
+                                            <Slider Ticks="2,4,8" Maximum="8" TickPlacement="BottomRight" TickFrequency="2" Minimum="2" IsSnapToTickEnabled="True" Name="BitsPerSymbolSlider" ValueChanged="BitsPerSymbolSlider_ValueChanged"/>
                                         </DockPanel>
                                     </Grid>
                                     <Button x:Name="ContainerPrevButton" Click="ContainerPrevButton_Click" IsEnabled="True" Grid.Column="0" Grid.Row="2" Width="150" Height="25">Назад</Button>
@@ -183,10 +183,15 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1.5*"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="DecodeButton" Click="RevealMsgBtn_Click" Grid.Column="0" Grid.Row="0" Margin="10 0 10 0" Height="25" IsEnabled="False">Извлечь сообщение</Button>
-                            <Label x:Name="DecodeStatusKey" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Статус:</Label>
-                            <Label x:Name="RevealStatusValue" Grid.Column="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></Label>
-                            <Button x:Name="SaveRevealedMsgBtn" Grid.Row="1" Margin="10 0 10 0" Height="25" IsEnabled="False" Click="SaveRevealedMsgBtn_Click">Сохранить</Button> 
+                            <Label Content="Битов на символ" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                            <DockPanel VerticalAlignment="Center" Margin="10" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                                <Label Content="{Binding ElementName=DecodeBitsPerSymbolSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40"  />
+                                <Slider Ticks="2,4,8" Maximum="8" TickPlacement="BottomRight" TickFrequency="2" Minimum="2" IsSnapToTickEnabled="True" Name="DecodeBitsPerSymbolSlider" ValueChanged="BitsPerSymbolSlider_ValueChanged"/>
+                            </DockPanel>
+                            <Button x:Name="DecodeButton" Click="RevealMsgBtn_Click" Grid.Column="0" Grid.Row="1" Margin="10 0 10 0" Height="25" IsEnabled="False">Извлечь сообщение</Button>
+                            <Label x:Name="DecodeStatusKey" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Статус:</Label>
+                            <Label x:Name="RevealStatusValue" Grid.Column="2" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"></Label>
+                            <Button x:Name="SaveRevealedMsgBtn" Grid.Row="2" Margin="10 0 10 0" Height="25" IsEnabled="False" Click="SaveRevealedMsgBtn_Click">Сохранить</Button> 
                         </Grid>
                         <Button x:Name="MenuButton2" Grid.Column="2" Grid.Row="4" Height="25" Width="150px" Click="MenuButton_Click">В меню</Button>
                     </Grid>
