@@ -21,6 +21,10 @@ namespace HolyCryptv3 {
         private string IgnoredSymbolsList       = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s]";
         private int ContainerSymbolsCounter     = 0;
         private int MsgBitsCounter              = 0;
+        private string NamespaceUri             = "http://schemas.microsoft.com/office/drawing/2017/4/8/chartex";
+        private string NamespacePrefix          = "cx2";
+        private string HashAttributeName        = "hshId";
+        private string RunAttributeName         = "rv";
 
         #region Message
         private void OpenMsgBtn_Click(object sender, RoutedEventArgs e) {
@@ -319,6 +323,7 @@ namespace HolyCryptv3 {
             bool IsConcealingActive = true;
 
             Queue<(int, int)>? MsgBitsQueue = this.ParseMsg(this.MsgTextBox.Text, (int)this.BitsPerSymbolSlider.Value);
+            String MsgHashCode = this.HashCode(this.MsgTextBox.Text);
 
             if (null == MsgBitsQueue) {
                 return;
@@ -328,6 +333,15 @@ namespace HolyCryptv3 {
                          WordprocessingDocument.Open(this.ContainerFilePath, true)) {
 
                 Body DocumentBody = Document.MainDocumentPart?.Document.Body??new Body();
+                Document.MainDocumentPart?.Document.AddNamespaceDeclaration(this.NamespacePrefix, this.NamespaceUri);
+                DocumentBody.SetAttribute(
+                    new OpenXmlAttribute(
+                        this.NamespacePrefix,
+                        this.HashAttributeName,
+                        this.NamespaceUri,
+                        MsgHashCode
+                ));
+
                 var ParagraphList = DocumentBody.ChildElements.Where(child => child is Paragraph);
                 if (ParagraphList == null) {
                     return;

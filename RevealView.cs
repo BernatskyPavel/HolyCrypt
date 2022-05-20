@@ -164,13 +164,15 @@ namespace HolyCryptv3 {
             int Steps = sizeof(byte) * 8 / Size;
             int Index = 0;
             List<byte> _bytes = new List<byte>();
-            
+            string? HashCode = null;
 
 
             using (WordprocessingDocument Document =
              WordprocessingDocument.Open(this.ConcealedFilePath, false)) {
 
                 Body DocumentBody = Document.MainDocumentPart?.Document.Body??new Body();
+
+                HashCode = DocumentBody.GetAttribute(this.HashAttributeName, this.NamespaceUri).Value;
 
                 foreach (OpenXmlElement BodyElement in DocumentBody.ChildElements) {
                     if (IsMsgEnded) {
@@ -192,10 +194,17 @@ namespace HolyCryptv3 {
                                     continue;
                                 }
 
-                                if (!OutlineEffect.NamespaceDeclarations.Any(pair => pair.Key == "w41")) {
+                                try {
+                                    OutlineEffect.GetAttribute(this.RunAttributeName, this.NamespaceUri);
+                                }
+                                catch(KeyNotFoundException) {
                                     ErrorCounter += 1;
                                     continue;
                                 }
+
+                                //if (OutlineEffect.GetAttribute(this.RunAttributeName, this.NamespaceUri) != null) {
+                                    
+                                //}
 
                                 int? Width = OutlineEffect?.LineWidth?.Value;
                                 int? Alpha = OutlineEffect?
@@ -297,6 +306,12 @@ namespace HolyCryptv3 {
 
             //MsgBitsArray.CopyTo(ByteArray, 0);
             //Encoding Win1251Encoding = Encoding.GetEncoding(1251);
+
+            //if (null != HashCode && this.CheckHashCode(bytes.Reverse().ToArray(), HashCode)) {
+            //    MessageBox.Show("Hash GOOD!");
+            //}
+            
+
             RevealedText.Text = string.Join("", this.Encoding.GetString(bytes.Reverse().ToArray()));
             this.RevealStatusValue.Content = "Успешно извлечено!";
             this.RevealStatusValue.Foreground = Brushes.Green;

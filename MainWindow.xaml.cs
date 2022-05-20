@@ -37,7 +37,12 @@ namespace HolyCryptv3 {
                 Compound = CompoundLineValues.Simple,
             };
 
-            this.OutlineBase.AddNamespaceDeclaration("w41", "http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing");
+            this.OutlineBase.SetAttribute(new DocumentFormat.OpenXml.OpenXmlAttribute(
+                this.NamespacePrefix,
+                this.RunAttributeName,
+                this.NamespaceUri,
+                "True"
+            ));
 
             //this.CompleteOutline = this.getOutline("XX");
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

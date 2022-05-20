@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Security.Cryptography;
 
 namespace HolyCryptv3
 {
@@ -224,5 +225,20 @@ namespace HolyCryptv3
         private int GetBitsFromOutlineWidth(int width) {
             return (int)Math.Ceiling((double)(width - this.MinOutlineWidth) / this.OutlineWidthSteps.Decode);
         }
+
+        private string HashCode(string msg) {
+            SHA384 SHA = SHA384.Create();
+            byte[] Hash = SHA.ComputeHash(this.Encoding.GetBytes(msg));
+            return Convert.ToHexString(Hash);
+            //return this.Encoding.GetString(Hash);
+        }
+        private bool CheckHashCode(byte[] msg, string hash) {
+            SHA384 SHA = SHA384.Create();
+            byte[] Hash = SHA.ComputeHash(msg);
+            return Convert.ToHexString(Hash) == hash;
+            //return this.Encoding.GetString(Hash);
+        }
+
+
     }
 }
