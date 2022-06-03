@@ -1,0 +1,98 @@
+﻿<Page x:Class="HolyCryptv3.Pages.Conceal.ConcealCntPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:local="clr-namespace:HolyCryptv3.Pages.Conceal"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <!-- Theme setting -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Height="auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="1"
+                    FontSize="14pt"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="{DynamicResource ConcealCntPageHeader}"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                Height="30" Width="200" x:Name="OpenContainerBtn" Click="OpenContainerBtn_Click" Content="{DynamicResource ConcealCntPageOpenBtn}"/>
+            <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBox 
+                    mah:TextBoxHelper.Watermark="{DynamicResource ConcealCntPageMsgPlaceholder}"
+                    x:Name="ContainerTextBox" Width="auto" TextWrapping="Wrap" IsReadOnly="True"></TextBox>
+            </ScrollViewer>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.6*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    x:Name="ContainerCheckBtn" IsEnabled="{Binding Path=IsCheckBtnEnabled}" Click="ContainerCheckBtn_Click" Grid.Column="0" Grid.Row="1" Height="30" Margin="10 0 10 0" Content="{DynamicResource ConcealCntPageCheckBtn}"/>
+                <Label x:Name="CntCheckResultLabel" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label x:Name="ContainerCheckLabel" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <Button 
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    x:Name="ConcealBtn" Click="ConcealBtn_Click"
+                    Grid.Column="0" Grid.Row="2" Height="30" Margin="10 0 10 0"
+                    Content="{DynamicResource ConcealCntPageConcealBtn}"/>
+                <Label Grid.Row="2" Grid.Column="1" x:Name="ConcealStatusLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red" Content="{DynamicResource ConcealCntPageConcealLbl}"/>
+                <Label x:Name="ContainerErrorHeader" Foreground="Red" Visibility="Hidden" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center">Ошибка:</Label>
+                <Label x:Name="ContainerErrorLabel" Foreground="Red" Visibility="Hidden" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Bottom"></Label>
+                <Label x:Name="BitsPerSymbolSliderLabel" Content="Битов на символ" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                <DockPanel VerticalAlignment="Center" Margin="10" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                    <Label Content="{Binding ElementName=BitsPerSymbolSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40"  />
+                    <Slider Ticks="2,4,8" Maximum="8" TickPlacement="BottomRight" TickFrequency="2" Minimum="2" IsSnapToTickEnabled="True" Name="BitsPerSymbolSlider" ValueChanged="BitsPerSymbolSlider_ValueChanged"/>
+                </DockPanel>
+            </Grid>
+            <Button 
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                x:Name="ContainerPrevButton" Click="ContainerPrevButton_Click" IsEnabled="True" Grid.Column="0" Grid.Row="2" Width="150" Height="30" Content="{DynamicResource ConcealCntPagePrevBtn}"/>
+            <Button
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                x:Name="MenuButton1" Grid.Column="1" Grid.Row="2" Height="30" Width="150px" Click="MenuButton_Click" Content="{DynamicResource ConcealCntPageMenuBtn}"/>
+        </Grid>
+    </Grid>
+</Page>

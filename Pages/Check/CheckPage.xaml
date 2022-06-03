@@ -1,0 +1,92 @@
+﻿<Page x:Class="HolyCryptv3.Pages.Check.CheckPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HolyCryptv3.Pages.Check"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="{DynamicResource CheckPageTitle}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <!-- Theme setting -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Height="auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="1"
+                FontSize="14pt"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center" Content="{DynamicResource CheckPageHeader}"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button 
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                Height="30" Width="200" 
+                x:Name="OpenConcealedFileBtn" Click="OpenConcealedFileBtn_Click" 
+                Content="{DynamicResource CheckPageOpenBtn}"/>
+            <Label 
+                Height="30" Width="150"
+                Grid.Column="1" HorizontalContentAlignment="Center"
+                Foreground="Red" x:Name="ConcealedFileStatus"
+                Content="{DynamicResource CheckPageFileStatusF}"/>
+            <Label 
+                Grid.Row="1" Grid.Column="0" 
+                FontSize="16" FontWeight="Bold"
+                Content="{DynamicResource CheckPagePartlyHeader}"
+                HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            
+            <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                <Label Content="Битов на символ" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DockPanel VerticalAlignment="Center" Margin="10" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                    <Label Content="{Binding ElementName=CheckBitsPerSymbolSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40"  />
+                    <Slider Ticks="2,4,8" Maximum="8" TickPlacement="BottomRight" TickFrequency="2" Minimum="2" IsSnapToTickEnabled="True" Name="CheckBitsPerSymbolSlider"/>
+                </DockPanel>
+                <Button 
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    x:Name="PartlyCheckBtn" DockPanel.Dock="Bottom"
+                    Width="150" Height="30" Content="{DynamicResource CheckPageBtn}"
+                    Click="PartlyCheckBtn_Click"/>
+            </StackPanel>
+
+            <DockPanel Grid.Row="1" Grid.Column="1">
+                <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold" Content="{DynamicResource CheckPageFullHeader}" HorizontalAlignment="Center"/>
+                <Button 
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    x:Name="FullCheckBtn" DockPanel.Dock="Bottom" 
+                    Width="150" Height="30"
+                    Content="{DynamicResource CheckPageBtn}" Click="FullCheckBtn_Click"/>
+            </DockPanel>
+
+            <Button 
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                x:Name="MenuButton" Grid.Column="2" Grid.Row="4" 
+                Height="30" Width="150px"
+                Click="MenuButton_Click" Content="{DynamicResource CheckPageMenuBtn}"/>
+        </Grid>
+    </Grid>
+</Page>

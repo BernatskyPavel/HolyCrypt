@@ -11,7 +11,7 @@ namespace HolyCryptv3
 {
     partial class MainWindow : Window {
 
-        private Random Rand = new Random();
+        private Random Rand = new();
         enum Properties {
             WIDTH,
             ALPHA
@@ -41,7 +41,7 @@ namespace HolyCryptv3
                 return effect;
             }
 
-            SchemeColor? scheme = new SchemeColor {
+            SchemeColor? scheme = new() {
                 Val = SchemeColorValues.ExtraSchemeColor1,
             };
 
@@ -70,7 +70,7 @@ namespace HolyCryptv3
                 return effect;
             }
 
-            SchemeColor? scheme = new SchemeColor {
+            SchemeColor? scheme = new() {
                 Val = SchemeColorValues.ExtraSchemeColor1,
             };
 

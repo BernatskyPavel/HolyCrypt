@@ -1,0 +1,91 @@
+﻿<Page x:Class="HolyCryptv3.Pages.Reveal.RevealPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:local="clr-namespace:HolyCryptv3.Pages.Reveal"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="{DynamicResource RevealPageTitle}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <!-- Theme setting -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Height="auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="1"
+                FontSize="14pt"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center" Content="{DynamicResource RevealPageHeader}"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button 
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                Height="30" Width="200" x:Name="OpenConcealedFileBtn" 
+                Click="OpenConcealedFileBtn_Click" Content="{DynamicResource RevealPageOpenBtn}"/>
+            <Label Height="25" Width="150" Grid.Column="1" HorizontalContentAlignment="Center" Foreground="Red" x:Name="ConcealedFileStatus" Content="{DynamicResource RevealPageFileStatusF}"/>
+            <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBox x:Name="RevealedText" Width="auto" TextWrapping="Wrap" IsReadOnly="True"/>
+            </ScrollViewer>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.7*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Битов на символ" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DockPanel VerticalAlignment="Center" Margin="10" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                    <Label Content="{Binding ElementName=DecodeBitsPerSymbolSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40"  />
+                    <Slider Ticks="2,4,8" Maximum="8" TickPlacement="BottomRight" TickFrequency="2" Minimum="2" IsSnapToTickEnabled="True" Name="DecodeBitsPerSymbolSlider" ValueChanged="DecodeBitsPerSymbolSlider_ValueChanged"/>
+                </DockPanel>
+                <Button
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    x:Name="RevealMsgBtn" Click="RevealMsgBtn_Click" 
+                    Grid.Column="0" Grid.Row="1" Margin="10 0 10 0"
+                    Height="30" Content="{DynamicResource RevealPageRevealBtn}"/>
+                <Label x:Name="DecodeStatusKey" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{DynamicResource RevealPageRevealLbl}"/>
+                <Label x:Name="RevealStatusValue" Grid.Column="2" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                <Button 
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    x:Name="SaveRevealedMsgBtn" Grid.Row="2" Margin="10 0 10 0"
+                    Height="30" Click="SaveRevealedMsgBtn_Click" Content="{DynamicResource RevealPageSaveBtn}"/>
+            </Grid>
+            <Button Background="{DynamicResource MahApps.Brushes.Accent}"
+                    x:Name="MenuButton" Grid.Column="2" Grid.Row="4" 
+                    Height="30" Width="150px" Click="MenuButton_Click" 
+                    Content="{DynamicResource RevealPageMenuBtn}"/>
+        </Grid>
+    </Grid>
+</Page>

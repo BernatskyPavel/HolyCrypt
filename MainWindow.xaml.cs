@@ -1,71 +1,53 @@
-﻿using DocumentFormat.OpenXml.Office2010.Word;
-using System.Collections.Generic;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System;
+using System.IO;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace HolyCryptv3 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow2.xaml
     /// </summary>
-    public partial class MainWindow: Window {
+    public partial class MainWindow2: MetroWindow {
+        public MainWindow2() {
 
-        private int MinOutlineWidth = 635;
-        private int MaxOutlineWidth = 1270;
-        private (int Encode, int Decode) OutlineWidthSteps = (0,0);
-        private int MinOutlineAlpha = 96000;
-        private int MaxOutlineAlpha = 100000;
-        private (int Encode, int Decode) OutlineAlphaSteps = (0,0);
-        private readonly Encoding Encoding;
+            Application.Current.Resources.Source = new Uri($"pack://application:,,,/Localization/Language.{Properties.General.Default.Language}.xaml");
 
-        private Dictionary<string, (int, int)> outlines = new Dictionary<string, (int, int)> {
-            {"00", (96000,635)},
-            {"01", (100000,635)},
-            {"10", (96000,1270)},
-            {"11", (100000,1270)},
-            {"XX", (99000,635)},
-        };
-
-        private readonly TextOutlineEffect? OutlineBase;
-        //private TextOutlineEffect? CompleteOutline = null;
-
-        public MainWindow() {
-
-            this.OutlineBase = new TextOutlineEffect {
-                CapType = LineCapValues.Round,
-                Alignment = PenAlignmentValues.Center,
-                Compound = CompoundLineValues.Simple,
-            };
-
-            this.OutlineBase.SetAttribute(new DocumentFormat.OpenXml.OpenXmlAttribute(
-                this.NamespacePrefix,
-                this.RunAttributeName,
-                this.NamespaceUri,
-                "True"
-            ));
-
-            //this.CompleteOutline = this.getOutline("XX");
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            this.Encoding = Encoding.GetEncoding(1251);
-
             InitializeComponent();
-            this.CalculateOutlineAlphaStep((int)this.BitsPerSymbolSlider.Value, Type.BOTH);
-            this.CalculateOutlineWidthStep((int)this.BitsPerSymbolSlider.Value, Type.BOTH);
+            this.Height = Properties.General.Default.WindowHeight;
+            this.Width = Properties.General.Default.WindowWidth;
+            _ = _MainFrame.Navigate(new Pages.Home.HomePage());
         }
 
-        private void ClearTextNextButton_Click(object sender, RoutedEventArgs e) {
-            ConcealTabControl.SelectedIndex = 1;
+        private void MenuItem_About_Click(object sender, RoutedEventArgs e) {
+            new Windows.About().Show();
         }
 
-        private void ContainerPrevButton_Click(object sender, RoutedEventArgs e) {
-            ConcealTabControl.SelectedIndex = 0;
+        private void MenuItem_Help_Click(object sender, RoutedEventArgs e) {
+            //new Windows.Help().Show();
+            if (!Directory.Exists("./Help")) {
+                _ = Directory.CreateDirectory("./Help");
+            }
+            if (!File.Exists("./Help/Help.chm")) {
+                File.WriteAllBytes("./Help/Help.chm", Properties.Resources.Help);
+            }
+
+            System.Windows.Forms.Help.ShowHelp(null, "./Help/Help.chm");
         }
 
-        private void BitsPerSymbolSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            Type regime = ((Slider)sender).Name == "BitsPerSymbolSlider" ? Type.ENCODE : Type.DECODE;
-            this.CalculateOutlineAlphaStep((int)e.NewValue, regime);
-            this.CalculateOutlineWidthStep((int)e.NewValue, regime);
+        public async void ShowMyMessage(string? Title, string? Msg) {
+            _ = await this.ShowMessageAsync(Title, Msg);
         }
+        public async void ShowErrorMessage(string? Title, string? Msg) {
+            _ = await this.ShowMessageAsync(Title, Msg, MessageDialogStyle.Affirmative, new MetroDialogSettings() {
+                ColorScheme = MetroDialogColorScheme.Inverted,
+            });
+        }
+
+        //private void MenuItem_Settings_Click(object sender, RoutedEventArgs e) {
+        //    this.FirstFlyout.IsOpen = true;
+        //}
     }
 }
-

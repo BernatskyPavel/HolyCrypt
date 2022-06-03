@@ -1,0 +1,99 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+
+    <!--#region Menu-->
+    <v:String x:Key="MenuHelp">Справка</v:String>
+    <v:String x:Key="MenuAbout">О программе</v:String>
+    <!--#endregion Menu-->
+    
+    <!--#region Main Window-->
+    <v:String x:Key="MainTitle">HolyCrypt</v:String>
+    <!--#endregion Main Window-->
+
+    <!--#region Home Page-->
+    <v:String x:Key="HomePageTitle">Домашняя страница</v:String>
+    <v:String x:Key="HomePageConcealBtn">Внедрение информации</v:String>
+    <v:String x:Key="HomePageRevealBtn">Извлечение информации</v:String>
+    <v:String x:Key="HomePageCheckBtn">Проверка целостности</v:String>
+    <!--#endregion Home Page-->
+
+    <!--#region ConcealMsg Page-->
+    <v:String x:Key="ConcealMsgPageTitle">Cтраница стегосообщения</v:String>
+    <v:String x:Key="ConcealMsgPageHeader">Стегосообщение</v:String>
+    <v:String x:Key="ConcealMsgPageOpenBtn">Открыть тайное сообщение</v:String>
+    <v:String x:Key="ConcealMsgPageMsgPlaceholder">Содержимое тайного сообщения...</v:String>
+    <v:String x:Key="ConcealMsgPageBinaryCounterLbl">Количество символов бинарного сообщения:</v:String>
+    <v:String x:Key="ConcealMsgPageBinaryMsgHeader">Бинарное представление сообщения</v:String>
+    <v:String x:Key="ConcealMsgPageNextBtn">Далее</v:String>
+    <!--#endregion ConcealMsg Page-->
+
+    <!--#region ConcealCnt Page-->
+    <v:String x:Key="ConcealCntPageTitle">Cтраница стегоконтейнера</v:String>
+    <v:String x:Key="ConcealCntPageHeader">Стегоконтейнер</v:String>
+    <v:String x:Key="ConcealCntPageOpenBtn">Открыть документ-контейнер</v:String>
+    <v:String x:Key="ConcealCntPageMsgPlaceholder">Содержимое документа-контейнера...</v:String>
+    <v:String x:Key="ConcealCntPageSliderLbl">Количество битов на символ:</v:String>
+    <v:String x:Key="ConcealCntPageCheckBtn">Проверка условия</v:String>
+    <v:String x:Key="ConcealCntPageCheckS">Выполняется</v:String>
+    <v:String x:Key="ConcealCntPageCheckF">Не выполняется</v:String>
+    <v:String x:Key="ConcealCntPageConcealBtn">Внедрить сообщение</v:String>
+    <v:String x:Key="ConcealCntPageConcealLbl">Статус</v:String>
+    <v:String x:Key="ConcealCntPagePrevBtn">Назад</v:String>
+    <v:String x:Key="ConcealCntPageMenuBtn">В меню</v:String>
+    <!--#endregion ConcealCnt Page-->
+
+    <!--#region Reveal Page-->
+    <v:String x:Key="RevealPageTitle">Cтраница извлечения</v:String>
+    <v:String x:Key="RevealPageHeader">Извлечение сообщения</v:String>
+    <v:String x:Key="RevealPageOpenBtn">Открыть документ-контейнер</v:String>
+    <v:String x:Key="RevealPageMsgPlaceholder">Содержимое тайного сообщения...</v:String>
+    <v:String x:Key="RevealPageSliderLbl">Количество битов на символ:</v:String>
+    <v:String x:Key="RevealPageRevealBtn">Извлечь сообщение</v:String>
+    <v:String x:Key="RevealPageRevealLbl">Статуc</v:String>
+    <v:String x:Key="RevealPageSaveBtn">Сохранить сообщение</v:String>
+    <v:String x:Key="RevealPageMenuBtn">В меню</v:String>
+    <v:String x:Key="RevealPageFileStatusF">Контейнер не выбран</v:String>
+    <!--<v:String x:Key="RevealPageFileStatusS"></v:String>-->
+    <v:String x:Key="RevealPageCheckF">Не выполняется</v:String>
+    <v:String x:Key="RevealPageConcealBtn">Внедрить сообщение</v:String>
+    <!--#endregion Reveal Page-->
+
+    <!--#region Check Page-->
+    <v:String x:Key="CheckPageTitle">Cтраница проерки целостности</v:String>
+    <v:String x:Key="CheckPageHeader">Проверка целостности сообщения</v:String>
+    <v:String x:Key="CheckPageOpenBtn">Открыть документ-контейнер</v:String>
+    <v:String x:Key="CheckPageFileStatusF">Контейнер не выбран</v:String>
+    <v:String x:Key="CheckPageBtn">Проверить целостность</v:String>
+    <v:String x:Key="CheckPageFullHeader">Полная проверка</v:String>
+    <v:String x:Key="CheckPagePartlyHeader">Частичная проверка</v:String>
+    <v:String x:Key="CheckPageMenuBtn">В меню</v:String>
+    <!--#endregion Check Page-->
+    
+    <!--#region About Window-->
+    <v:String x:Key="AboutHeader">О программе HolyCrypt</v:String>
+    <v:String x:Key="AboutText">Программа HolyCrypt создана в учебно-ознакомительных целях в рамках магистерской диссертации.</v:String>
+    <v:String x:Key="AboutAuthor">©Copyright. Нистюк Ольга Александровна, 2022.</v:String>
+    <v:String x:Key="AboutButton">ОК</v:String>
+    <!--#endregion About Window-->
+    
+    <!--#region Errors-->
+    <v:String x:Key="ErrorBoxHeader">Ошибка</v:String>
+    <v:String x:Key="SuccessBoxHeader">Успех</v:String>
+    <v:String x:Key="InfoBoxHeader">Предупреждение</v:String>
+    <v:String x:Key="CodepageError">Ваша система не поддерживает кодовую страницу Windows-1251!</v:String>
+    <v:String x:Key="CntNotSelectedMsg">Документ-контейнер не выбран.</v:String>
+    <v:String x:Key="CntErrorMissingHashMsg">Ошибка контейнера! Отсутствует подпись.</v:String>
+    <v:String x:Key="CheckMsgSuccessMsg">Сообщение подлинно!</v:String>
+    <v:String x:Key="CheckMsgFailureMsg">Подлинность сообщения не гарантирована!</v:String>
+    <v:String x:Key="FileOpenFailureMsg">Ошибка открытия файла.</v:String>
+    <v:String x:Key="CntNotCheckedMsg">Файл-контейнер не проверен/подходит.</v:String>
+    <v:String x:Key="MsgParseErrorMsg">Ошибка преобразования тайного сообщения!</v:String>
+    <v:String x:Key="ConcealFailureMsg">Ошибка внедрения.</v:String>
+    <v:String x:Key="OpenFileExtFailureMsg">Указан путь у неподходящему файлу!</v:String>
+    <v:String x:Key="MsgNotInputedMsg">Тайное сообщение не выбрано.</v:String>
+    <v:String x:Key="CntErrorMsg">Ошибка контейнера.</v:String>
+    <v:String x:Key="RevealMsgEmpty">Cообщение не извлечено. Нечего сохранять.</v:String>
+    <v:String x:Key="CheckFailureInfoMsg">Превышение объема сообщения над объемом контейнера.</v:String>
+    <!--#endregion Errors-->
+</ResourceDictionary>
