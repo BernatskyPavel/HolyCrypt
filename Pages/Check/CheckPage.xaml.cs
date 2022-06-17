@@ -1,11 +1,11 @@
-﻿using HolyCryptv3.Utils;
+﻿using StegoLine.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace HolyCryptv3.Pages.Check {
+namespace StegoLine.Pages.Check {
     /// <summary>
     /// Interaction logic for CheckPage.xaml
     /// </summary>
@@ -37,7 +37,7 @@ namespace HolyCryptv3.Pages.Check {
 
         private void FullCheckBtn_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrEmpty(this.ConcealedFilePath)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["CntNotSelectedMsg"].ToString()
                 );
@@ -47,8 +47,8 @@ namespace HolyCryptv3.Pages.Check {
             string? HashCode = RevealUtils.GetHashCode(this.ConcealedFilePath);
 
             if (string.IsNullOrEmpty(HashCode)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
-                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
+                    Application.Current.Resources["ErrorBoxHeader"].ToString(),
                     Application.Current.Resources["CntErrorMissingHashMsg"].ToString()
                 );
                 return;
@@ -75,14 +75,14 @@ namespace HolyCryptv3.Pages.Check {
             Properties.Reveal.Default.Save();
 
             if (IsMsgOk) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
-                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["RevealPageCheckHeader"].ToString(),
                     Application.Current.Resources["CheckMsgSuccessMsg"].ToString()
                 );
             }
             else {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
-                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["RevealPageCheckHeader"].ToString(),
                     Application.Current.Resources["CheckMsgFailureMsg"].ToString()
                 );
             }
@@ -90,7 +90,7 @@ namespace HolyCryptv3.Pages.Check {
 
         private void PartlyCheckBtn_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrEmpty(this.ConcealedFilePath)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["CntNotSelectedMsg"].ToString()
                 );
@@ -100,7 +100,7 @@ namespace HolyCryptv3.Pages.Check {
             string? HashCode = RevealUtils.GetHashCode(this.ConcealedFilePath);
 
             if (string.IsNullOrEmpty(HashCode)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                     Application.Current.Resources["ErrorBoxHeader"].ToString(),
                     Application.Current.Resources["CntErrorMissingHashMsg"].ToString()
                 );
@@ -117,19 +117,27 @@ namespace HolyCryptv3.Pages.Check {
             List<byte> RawBytes = RevealUtils.GetRawBytes(this.ConcealedFilePath, BitsPerSymbol);
             byte[] MsgBytes = RevealUtils.ParseRawBytes(RawBytes, BitsPerSymbol);
 
+            if (MsgBytes == null) {
+                (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
+                    Application.Current.Resources["ErrorBoxHeader"].ToString(),
+                    Application.Current.Resources["CheckEmptyMsg"].ToString()
+                );
+                return;
+            }
+
             Properties.Reveal.Default.OutlineWidthStep = OldWidthStep;
             Properties.Reveal.Default.OutlineAlphaStep = OldAlpha;
             Properties.Reveal.Default.Save();
 
             if (CheckUtils.CheckHashCode(MsgBytes, HashCode)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
-                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["RevealPageCheckHeader"].ToString(),
                     Application.Current.Resources["CheckMsgSuccessMsg"].ToString()
                 );
             }
             else {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
-                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["RevealPageCheckHeader"].ToString(),
                     Application.Current.Resources["CheckMsgFailureMsg"].ToString()
                 );
             }

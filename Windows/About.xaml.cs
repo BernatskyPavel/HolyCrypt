@@ -1,7 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using System.Windows;
 
-namespace HolyCryptv3.Windows {
+namespace StegoLine.Windows {
     /// <summary>
     /// Interaction logic for About.xaml
     /// </summary>

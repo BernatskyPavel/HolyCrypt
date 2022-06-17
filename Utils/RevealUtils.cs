@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HolyCryptv3.Utils {
+namespace StegoLine.Utils {
     public static class RevealUtils {
         public static void CalculateOutlineWidthStep(int size) {
             int TempBuff = (int)Math.Pow(2, size / 2) - 1;

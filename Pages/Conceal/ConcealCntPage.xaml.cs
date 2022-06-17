@@ -2,7 +2,7 @@
 using DocumentFormat.OpenXml.Office2010.Word;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using HolyCryptv3.Utils;
+using StegoLine.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace HolyCryptv3.Pages.Conceal {
+namespace StegoLine.Pages.Conceal {
     /// <summary>
     /// Interaction logic for ConcealCntPage.xaml
     /// </summary>
@@ -49,7 +49,7 @@ namespace HolyCryptv3.Pages.Conceal {
                     this.ContainerTextBox.Text = DocumentBody?.InnerText;
                 }
                 catch (Exception ex) {
-                    (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                    (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                         Application.Current.Resources["ErrorBoxHeader"].ToString(),
                         $"{Application.Current.Resources["FileOpenFailureMsg"]}\n{ex.Message}"
                     );
@@ -63,7 +63,7 @@ namespace HolyCryptv3.Pages.Conceal {
             this.ContainerCheckLabel.Visibility = Visibility.Hidden;
 
             if (string.IsNullOrEmpty(this.ContainerFilePath)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["CntNotSelectedMsg"].ToString()
                 );
@@ -85,7 +85,7 @@ namespace HolyCryptv3.Pages.Conceal {
                 this.ContainerCheckLabel.Visibility = Visibility.Visible;
                 IsChecked = CheckResult;
                 if (!CheckResult) {
-                    (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                    (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                        Application.Current.Resources["InfoBoxHeader"].ToString(),
                        Application.Current.Resources["CheckFailureInfoMsg"].ToString()
                     );
@@ -96,7 +96,7 @@ namespace HolyCryptv3.Pages.Conceal {
         private void ConcealBtn_Click(object sender, RoutedEventArgs e) {
 
             if (string.IsNullOrEmpty(this.ContainerFilePath)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["CntNotSelectedMsg"].ToString()
                 );
@@ -104,7 +104,7 @@ namespace HolyCryptv3.Pages.Conceal {
             }
 
             if (!this.IsChecked) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["CntNotCheckedMsg"].ToString()
                 );
@@ -125,7 +125,7 @@ namespace HolyCryptv3.Pages.Conceal {
             String MsgHashCode = GeneralUtils.HashCode(this.MsgInfo.Text, this.MsgInfo.MsgEncoding);
 
             if (null == MsgBitsQueue || MsgBitsQueue.Count == 0) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                     Application.Current.Resources["ErrorBoxHeader"].ToString(),
                     Application.Current.Resources["MsgParseErrorMsg"].ToString()
                 );
@@ -141,14 +141,22 @@ namespace HolyCryptv3.Pages.Conceal {
                      (WordprocessingDocument)Origin.Clone($"{PathParts[0]}_stg_{DateTime.Now:yyyy_MM_ddTHH_mm_ssZ}.{PathParts[1]}", true);
 
                 Body DocumentBody = Document.MainDocumentPart?.Document.Body??new Body();
-                Document.MainDocumentPart?.Document.AddNamespaceDeclaration(Properties.General.Default.NamespacePrefix, Properties.General.Default.NamespaceUri);
+
+
+                try {
+                    Document.MainDocumentPart?.Document.AddNamespaceDeclaration(Properties.General.Default.NamespacePrefix, Properties.General.Default.NamespaceUri);
+                }
+                catch (Exception) {}
+
                 DocumentBody.SetAttribute(
-                    new OpenXmlAttribute(
-                        Properties.General.Default.NamespacePrefix,
-                        Properties.General.Default.HashAttributeName,
-                        Properties.General.Default.NamespaceUri,
-                        MsgHashCode
+                        new OpenXmlAttribute(
+                            Properties.General.Default.NamespacePrefix,
+                            Properties.General.Default.HashAttributeName,
+                            Properties.General.Default.NamespaceUri,
+                            MsgHashCode
                 ));
+
+
 
                 var ParagraphList = DocumentBody.ChildElements.Where(child => child is Paragraph);
                 if (ParagraphList == null) {
@@ -267,7 +275,7 @@ namespace HolyCryptv3.Pages.Conceal {
                 ConcealStatusLabel.Foreground = Brushes.Green;
             }
             catch (Exception ex) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                     Application.Current.Resources["ErrorBoxHeader"].ToString(),
                     $"{Application.Current.Resources["ConcealFailureMsg"]}\n{ex.Message}"
                 );
@@ -286,7 +294,7 @@ namespace HolyCryptv3.Pages.Conceal {
         }
 
         private void MenuButton_Click(object sender, RoutedEventArgs e) {
-            _ = this.NavigationService.Navigate(new HolyCryptv3.Pages.Home.HomePage());
+            _ = this.NavigationService.Navigate(new StegoLine.Pages.Home.HomePage());
         }
     }
 }

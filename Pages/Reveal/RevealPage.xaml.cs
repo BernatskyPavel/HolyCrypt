@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using HolyCryptv3.Utils;
+using StegoLine.Utils;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using System;
@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace HolyCryptv3.Pages.Reveal {
+namespace StegoLine.Pages.Reveal {
     /// <summary>
     /// Interaction logic for RevealPage.xaml
     /// </summary>
@@ -46,12 +46,21 @@ namespace HolyCryptv3.Pages.Reveal {
             this.DecodeStatusKey.Foreground = Brushes.Red;
 
             if (string.IsNullOrEmpty(this.ConcealedFilePath)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["CntNotSelectedMsg"].ToString()
                 );
                 return;
             }
+
+            string? HashCode = RevealUtils.GetHashCode(this.ConcealedFilePath);
+            if (null == HashCode) {
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                    Application.Current.Resources["CntWarningMissingHashMsg"].ToString()
+                );
+            }
+
 
             int Size = (int)this.DecodeBitsPerSymbolSlider.Value;
 
@@ -61,24 +70,32 @@ namespace HolyCryptv3.Pages.Reveal {
                 MsgBytes = RevealUtils.ParseRawBytes(RawBytes, Size);
             }
             catch (Exception ex) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                     Application.Current.Resources["ErrorBoxHeader"].ToString(),
                     $"{Application.Current.Resources["CntErrorMsg"]}\n{ex.Message}"
                 );
                 return;
             }
 
-            string? HashCode = RevealUtils.GetHashCode(this.ConcealedFilePath);
+            if (MsgBytes == null) {
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                    Application.Current.Resources["RevealEmptyMsg"].ToString()
+                );
+                return;
+            }
+
+            //string? HashCode = RevealUtils.GetHashCode(this.ConcealedFilePath);
             this.RevealStatusValue.Visibility = Visibility.Hidden;
             if (null != HashCode && CheckUtils.CheckHashCode(MsgBytes, HashCode)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
-                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["RevealPageCheckHeader"].ToString(),
                     Application.Current.Resources["CheckMsgSuccessMsg"].ToString()
                 );
             }
             else {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
-                    Application.Current.Resources["InfoBoxHeader"].ToString(),
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
+                    Application.Current.Resources["RevealPageCheckHeader"].ToString(),
                     Application.Current.Resources["CheckMsgFailureMsg"].ToString()
                 );
             }
@@ -107,7 +124,7 @@ namespace HolyCryptv3.Pages.Reveal {
                 }
             }
             catch (Exception ex) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                     Application.Current.Resources["ErrorBoxHeader"].ToString(),
                     $"{Application.Current.Resources["FileOpenFailureMsg"]}\n{ex.Message}"
                 );
@@ -119,7 +136,7 @@ namespace HolyCryptv3.Pages.Reveal {
         private void SaveRevealedMsgBtn_Click(object sender, RoutedEventArgs e) {
 
             if (string.IsNullOrEmpty(RevealedText.Text)) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["RevealMsgEmpty"].ToString()
                 );
@@ -139,7 +156,7 @@ namespace HolyCryptv3.Pages.Reveal {
 
                 int LastDotPosition = FileDialog.SafeFileName.LastIndexOf('.');
                 if (LastDotPosition == -1) {
-                    (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                    (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                         Application.Current.Resources["ErrorBoxHeader"].ToString(),
                         Application.Current.Resources["OpenFileExtFailureMsg"].ToString()
                     );
@@ -182,7 +199,7 @@ namespace HolyCryptv3.Pages.Reveal {
                         FileStream.Close();
                     }
                     catch (Exception ex) {
-                        (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                        (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                             Application.Current.Resources["ErrorBoxHeader"].ToString(),
                             $"{Application.Current.Resources["FileOpenFailureMsg"]}\n{ex.Message}"
                         );
@@ -198,7 +215,7 @@ namespace HolyCryptv3.Pages.Reveal {
                 this.NavigationService.GoBack();
             }
             else {
-                _ = this.NavigationService.Navigate(new HolyCryptv3.Pages.Home.HomePage());
+                _ = this.NavigationService.Navigate(new StegoLine.Pages.Home.HomePage());
             }
         }
     }

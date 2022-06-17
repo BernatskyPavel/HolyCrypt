@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace HolyCryptv3 {
+namespace StegoLine {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

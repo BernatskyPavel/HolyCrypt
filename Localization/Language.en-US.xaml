@@ -54,7 +54,6 @@
     <v:String x:Key="RevealPageSaveBtn">Сохранить сообщение</v:String>
     <v:String x:Key="RevealPageMenuBtn">В меню</v:String>
     <v:String x:Key="RevealPageFileStatusF">Контейнер не выбран</v:String>
-    <v:String x:Key="RevealPageCheckHeader">Результат проверки</v:String>
     <!--<v:String x:Key="RevealPageFileStatusS"></v:String>-->
     <v:String x:Key="RevealPageCheckF">Не выполняется</v:String>
     <v:String x:Key="RevealPageConcealBtn">Внедрить сообщение</v:String>
@@ -85,7 +84,6 @@
     <v:String x:Key="CodepageError">Ваша система не поддерживает кодовую страницу Windows-1251!</v:String>
     <v:String x:Key="CntNotSelectedMsg">Документ-контейнер не выбран.</v:String>
     <v:String x:Key="CntErrorMissingHashMsg">Ошибка контейнера! Отсутствует подпись.</v:String>
-    <v:String x:Key="CntWarningMissingHashMsg">Отсутствует подпись. Подлинность проверить невозможно.</v:String>
     <v:String x:Key="CheckMsgSuccessMsg">Сообщение подлинно!</v:String>
     <v:String x:Key="CheckMsgFailureMsg">Подлинность сообщения не гарантирована!</v:String>
     <v:String x:Key="FileOpenFailureMsg">Ошибка открытия файла.</v:String>
@@ -97,7 +95,5 @@
     <v:String x:Key="CntErrorMsg">Ошибка контейнера.</v:String>
     <v:String x:Key="RevealMsgEmpty">Cообщение не извлечено. Нечего сохранять.</v:String>
     <v:String x:Key="CheckFailureInfoMsg">Превышение объема сообщения над объемом контейнера.</v:String>
-    <v:String x:Key="RevealEmptyMsg">В документе отсутствует сообщение.</v:String>
-    <v:String x:Key="CheckEmptyMsg">В документе отсутствует сообщение. Нечего проверять на подлинность!</v:String>
     <!--#endregion Errors-->
 </ResourceDictionary>

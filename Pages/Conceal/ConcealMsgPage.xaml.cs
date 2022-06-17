@@ -1,6 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using HolyCryptv3.Utils;
+using StegoLine.Utils;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
 using System;
@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace HolyCryptv3.Pages.Conceal {
+namespace StegoLine.Pages.Conceal {
     /// <summary>
     /// Interaction logic for ConcealMsgPage.xaml
     /// </summary>
@@ -51,7 +51,7 @@ namespace HolyCryptv3.Pages.Conceal {
 
                 int LastDotPosition = MsgFilePath.LastIndexOf('.');
                 if (LastDotPosition == -1) {
-                    (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                    (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                         Application.Current.Resources["ErrorBoxHeader"].ToString(),
                         Application.Current.Resources["OpenFileExtFailureMsg"].ToString()
                     );
@@ -89,7 +89,7 @@ namespace HolyCryptv3.Pages.Conceal {
                     }
                 }
                 catch (Exception ex) {
-                    (Application.Current.MainWindow as MainWindow2)?.ShowErrorMessage(
+                    (Application.Current.MainWindow as MainWindow)?.ShowErrorMessage(
                         Application.Current.Resources["ErrorBoxHeader"].ToString(),
                         $"{Application.Current.Resources["FileOpenFailureMsg"]}\n{ex.Message}"
                     );
@@ -116,7 +116,7 @@ namespace HolyCryptv3.Pages.Conceal {
 
         private void ClearTextNextButton_Click(object sender, RoutedEventArgs e) {
             if (!this.IsNextBtnEnable) {
-                (Application.Current.MainWindow as MainWindow2)?.ShowMyMessage(
+                (Application.Current.MainWindow as MainWindow)?.ShowMyMessage(
                     Application.Current.Resources["InfoBoxHeader"].ToString(),
                     Application.Current.Resources["MsgNotInputedMsg"].ToString()
                 );
@@ -136,7 +136,6 @@ namespace HolyCryptv3.Pages.Conceal {
             this.MsgBitsTextBox.Text = ConcealUtils.ToBinaryString(this.MsgEncoding, this.MsgTextBox.Text);
             this.MsgBitsCounter = MsgBitsTextBox.Text.Length;
             BitsCounterLabel.Text = this.MsgBitsCounter.ToString();
-            //this.BitsCounterLabel.Content = this.MsgBitsTextBox.Text.Length;
             this.IsNextBtnEnable = this.MsgTextBox.Text.Length != 0;
         }
     }

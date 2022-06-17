@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace HolyCryptv3.Pages.Home {
+namespace StegoLine.Pages.Home {
     /// <summary>
     /// Interaction logic for HomePage.xaml
     /// </summary>

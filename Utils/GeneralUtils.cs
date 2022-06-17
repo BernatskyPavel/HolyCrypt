@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 
-namespace HolyCryptv3.Utils {
+namespace StegoLine.Utils {
     public class GeneralUtils {
 
         public static Encoding GetEncoding(int codepage) {

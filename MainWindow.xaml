@@ -1,16 +1,20 @@
-﻿<mah:MetroWindow x:Class="HolyCryptv3.MainWindow2"
+﻿<mah:MetroWindow x:Class="StegoLine.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:local="clr-namespace:HolyCryptv3"
+        xmlns:local="clr-namespace:StegoLine"
+        xmlns:properties="clr-namespace:StegoLine.Properties"
+        xmlns:convert="clr-namespace:StegoLine.Utils.Converters"
         mc:Ignorable="d"
         Title="{DynamicResource MainTitle}" 
         Height="600" Width="800" ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen">
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
+            <convert:WidthConverter x:Key="WidthConverter"/>
+            <convert:TransparencyConverter x:Key="TransparencyConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
@@ -20,38 +24,93 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
-    <!--<mah:MetroWindow.Flyouts>
+    <mah:MetroWindow.Flyouts>
         <mah:FlyoutsControl>
-            <mah:Flyout x:Name="FirstFlyout" IsOpen="True" 
+            <mah:Flyout x:Name="FirstFlyout" 
                         Theme="Accent"
                         Header="Settings" Position="Right" Width="250">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.2*"/>
+                        <ColumnDefinition Width="1.1*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
-                        <Label x:Name="SettinsLanguage" Content="Язык:" HorizontalAlignment="Center"/>
+                        <Label x:Name="SettingsLanguage" Content="Язык:" HorizontalAlignment="Center"/>
+                        <Label x:Name="SettingsMinW" Height="auto" Content="Минимальная&#xA;ширина:" HorizontalAlignment="Center"/>
+                        <Label x:Name="SettingsMaxW" Height="auto" Content="Максимальная&#xA;ширина:" HorizontalAlignment="Center"/>
+                        <Label x:Name="SettingsMinA" Height="auto" Content="Минимальная&#xA;прозрачнсоть:" HorizontalAlignment="Center"/>
+                        <Label x:Name="SettingsMaxA" Height="auto" Content="Максимальная&#xA;прозрачность:" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Grid.Column="1">
+                    <StackPanel Grid.Column="1" x:Name="SettingValues">
                         <ComboBox Margin="5 0 5 0" SelectedIndex="0">
                             <ComboBoxItem Content="Русский" x:Name="ru_RU"/>
-                            <ComboBoxItem Content="Английский" x:Name="en_US"/>
+                            <ComboBoxItem Content="Английский (США)" x:Name="en_US"/>
                         </ComboBox>
+                        <Grid Height="{Binding ActualHeight, ElementName=SettingsMinW}">
+                            <mah:NumericUpDown Width="120px"
+                                Margin="0 10 5 10" x:Name="MinWValue" 
+                                Minimum="0.01" Maximum="1" Interval="0.01"
+                                Height="20" Value="{Binding Source={x:Static properties:General.Default},
+                                Path=MinOutlineWidth, Mode=TwoWay, Converter={StaticResource WidthConverter}}"
+                                Background="White" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                        </Grid>
+                        <Grid Height="{Binding ActualHeight, ElementName=SettingsMaxW}">
+                            <mah:NumericUpDown Width="120px"
+                                Margin="0 10 5 10" x:Name="MaxWValue"
+                                Height="20" Value="{Binding Source={x:Static properties:General.Default},
+                                                            Path=MaxOutlineWidth,
+                                                            Mode=TwoWay, Converter={StaticResource WidthConverter}}"
+                                Interval="0.01" Minimum="{Binding Value, ElementName=MinWValue}"
+                                Maximum="1"
+                                Background="White" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                        </Grid>
+                        <Grid Height="{Binding ActualHeight, ElementName=SettingsMinA}">
+                            <mah:NumericUpDown Width="120px"
+                                Margin="0 10 5 10" x:Name="MinAValue" Height="20" 
+                                Minimum="0" Maximum="99.999" Interval="0.001"
+                                Background="White" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                Speedup="True"
+                                Value="{Binding Source={x:Static properties:General.Default},
+                                                            Path=MinOutlineAlpha,
+                                                            Mode=TwoWay, Converter={StaticResource TransparencyConverter}}"/>
+                        </Grid>
+                        <Grid Height="{Binding ActualHeight, ElementName=SettingsMaxA}">
+                            <mah:NumericUpDown Width="120px"
+                                Margin="0 10 5 10" x:Name="MaxAValue" Height="20" 
+                                Interval="0.001" Minimum="{Binding Value, ElementName=MinAValue}"
+                                Maximum="100" Speedup="True"
+                                Background="White" Foreground="{DynamicResource MahApps.Brushes.AccentBase}"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                Value="{Binding Source={x:Static properties:General.Default},
+                                                            Path=MaxOutlineAlpha,
+                                                            Mode=TwoWay, Converter={StaticResource TransparencyConverter}}"/>
+                        </Grid>
                     </StackPanel>
+                    <Button x:Name="SaveSettingsBtn" Grid.Row="1" Grid.ColumnSpan="2"
+                            Click="SaveSettingsBtn_Click" Content="Save"
+                            Margin="20 0 20 20"/>
                 </Grid>
                 
             </mah:Flyout>
         </mah:FlyoutsControl>
-    </mah:MetroWindow.Flyouts>-->
+    </mah:MetroWindow.Flyouts>
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="30" VerticalContentAlignment="Center">
-            <MenuItem Header="{DynamicResource MenuHelp}" Height="30" x:Name="MenuItem_Help" Click="MenuItem_Help_Click"></MenuItem>
-            <MenuItem Header="{DynamicResource MenuAbout}" Height="30" x:Name="MenuItem_About" Click="MenuItem_About_Click"></MenuItem>
-            <!--<MenuItem Header="Настройки" Height="30" x:Name="MenuItem_Settings" Click="MenuItem_Settings_Click"></MenuItem>-->
+            <MenuItem Header="{DynamicResource MenuHelp}" Height="30" x:Name="MenuItem_Help" Click="MenuItem_Help_Click"/>
+            <MenuItem Header="{DynamicResource MenuAbout}" Height="30" x:Name="MenuItem_About" Click="MenuItem_About_Click"/>
+            <MenuItem Header="Настройки" Height="30" x:Name="MenuItem_Settings" Click="MenuItem_Settings_Click" Visibility="Collapsed"/>
         </Menu>
-        
         <Frame x:Name="_MainFrame" NavigationUIVisibility="Hidden"></Frame>
-        
     </DockPanel>
 </mah:MetroWindow>
