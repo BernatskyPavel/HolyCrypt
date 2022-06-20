@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         Title="{DynamicResource MainTitle}" 
         Height="600" Width="800" ResizeMode="CanMinimize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="pack://application:,,,/Resources/SL.ico">
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
             <convert:WidthConverter x:Key="WidthConverter"/>

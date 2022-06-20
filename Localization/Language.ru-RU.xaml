@@ -8,7 +8,7 @@
     <!--#endregion Menu-->
     
     <!--#region Main Window-->
-    <v:String x:Key="MainTitle">HolyCrypt</v:String>
+    <v:String x:Key="MainTitle">StegoLine</v:String>
     <!--#endregion Main Window-->
 
     <!--#region Home Page-->
@@ -72,8 +72,8 @@
     <!--#endregion Check Page-->
     
     <!--#region About Window-->
-    <v:String x:Key="AboutHeader">О программе HolyCrypt</v:String>
-    <v:String x:Key="AboutText">Программа HolyCrypt создана в учебно-ознакомительных целях в рамках магистерской диссертации.</v:String>
+    <v:String x:Key="AboutHeader">О программе StegoLine</v:String>
+    <v:String x:Key="AboutText">Программа StegoLine создана в учебно-ознакомительных целях в рамках магистерской диссертации.</v:String>
     <v:String x:Key="AboutAuthor">©Copyright. Нистюк Ольга Александровна, 2022.</v:String>
     <v:String x:Key="AboutButton">ОК</v:String>
     <!--#endregion About Window-->

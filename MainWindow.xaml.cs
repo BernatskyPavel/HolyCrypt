@@ -30,15 +30,7 @@ namespace StegoLine {
         }
 
         private void MenuItem_Help_Click(object sender, RoutedEventArgs e) {
-            //new Windows.Help().Show();
-            if (!Directory.Exists("./Help")) {
-                _ = Directory.CreateDirectory("./Help");
-            }
-            if (!File.Exists("./Help/Help.chm")) {
-                File.WriteAllBytes("./Help/Help.chm", Properties.Resources.Help);
-            }
-
-            System.Windows.Forms.Help.ShowHelp(null, "./Help/Help.chm");
+            System.Windows.Forms.Help.ShowHelp(null, "./Resources/Help.chm");
         }
 
         public async void ShowMyMessage(string? Title, string? Msg) {

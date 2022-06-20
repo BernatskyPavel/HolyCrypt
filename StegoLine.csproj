@@ -8,7 +8,13 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <UseWindowsForms>True</UseWindowsForms>
     <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+    <ApplicationIcon>SL.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Help.chm" />
+    <None Remove="Resources\SL.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.16.0" />
@@ -17,6 +23,16 @@
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Help.chm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\SL.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SL.ico" />
   </ItemGroup>
 
   <ItemGroup>
