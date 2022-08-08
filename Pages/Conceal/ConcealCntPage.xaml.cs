@@ -17,7 +17,7 @@ namespace StegoLine.Pages.Conceal {
     /// </summary>
     public partial class ConcealCntPage: Page {
         private string ContainerFilePath                = string.Empty;
-        private readonly string IgnoredSymbolsList      = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s]";
+        private readonly string IgnoredSymbolsList      = "[!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~–\\s\n]";
         private int ContainerSymbolsCounter             = 0;
         public bool IsChecked                           = false;
         private readonly ConcealUtils.MsgInfo MsgInfo;

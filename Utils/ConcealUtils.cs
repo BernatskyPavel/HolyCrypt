@@ -85,7 +85,8 @@ namespace StegoLine.Utils {
 
             int Steps = sizeof(byte) * 8 / Config.PartSize;
 
-            if (Config.ContainerLength < Config.MsgLength / Config.PartSize) {
+            //if (Config.ContainerLength < Config.MsgLength / Config.PartSize) {
+            if (Config.ContainerLength < bytes.Length * 8 / Config.PartSize) {
                 return null;
             }
 
@@ -93,21 +94,42 @@ namespace StegoLine.Utils {
                 return null;
             }
 
-            int MaxRand = Config.ContainerLength / (Config.MsgLength / Config.PartSize);
+            //int MaxRand = Config.ContainerLength / (Config.MsgLength / Config.PartSize);
+            int MaxRand = Config.ContainerLength / (bytes.Length * 8 / Config.PartSize);
 
-            foreach (byte _byte in bytes.Reverse()) {
-                int TempBuff = _byte;
-                int Position = new Random().Next(0, MaxRand);
-                int Before = Position, After = MaxRand - Position;
-                for (int i = 0; i < Steps; i++) {
-                    if (Before != 0) {
-                        list.Enqueue((Before, -1));
+            if (MaxRand == 1)
+            {
+                foreach (byte _byte in bytes.Reverse())
+                {
+                    int TempBuff = _byte;
+                    for (int i = 0; i < Steps; i++)
+                    {
+                        int BitsPart = TempBuff & mask;
+                        list.Enqueue((1, BitsPart));
+                        TempBuff >>= Config.PartSize;
                     }
-                    int BitsPart = TempBuff & mask;
-                    list.Enqueue((1, BitsPart));
-                    TempBuff >>= Config.PartSize;
-                    if (After != 0) {
-                        list.Enqueue((After, -1));
+                }
+            }
+            else
+            {
+                foreach (byte _byte in bytes.Reverse())
+                {
+                    int TempBuff = _byte;
+                    int Position = new Random().Next(0, MaxRand);
+                    int Before = Position, After = MaxRand - Position;
+                    for (int i = 0; i < Steps; i++)
+                    {
+                        if (Before != 0)
+                        {
+                            list.Enqueue((Before, -1));
+                        }
+                        int BitsPart = TempBuff & mask;
+                        list.Enqueue((1, BitsPart));
+                        TempBuff >>= Config.PartSize;
+                        if (After != 0)
+                        {
+                            list.Enqueue((After, -1));
+                        }
                     }
                 }
             }

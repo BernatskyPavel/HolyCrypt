@@ -151,7 +151,7 @@ namespace StegoLine.Utils {
                     if (IsMsgEnded) {
                         break;
                     }
-                    if (ErrorCounter == 5) {
+                    if (ErrorCounter == 50) {
                         break;
                     }
                     if (BodyElement is Paragraph) {
